@@ -1,35 +1,43 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 const multer = require("multer");
-const upload = multer();
 
+const upload = multer();
 const app = express();
-const PORT = 8080;
+
+// ✅ IMPORTANT: Use Render's assigned port
+const PORT = process.env.PORT || 8080;
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // In-memory storage for loan applications
 const applications = [];
 
 // Routes
+
+// Get all applications OR search by tracking number
 app.get("/applications", (req, res) => {
     const { trackingNumber } = req.query;
+
     if (trackingNumber) {
-        const application = applications.find(app => app.trackingNumber === trackingNumber);
+        const application = applications.find(
+            (app) => app.trackingNumber === trackingNumber
+        );
+
         if (application) {
-            res.json(application);
+            return res.json(application);
         } else {
-            res.status(404).json({ message: "Application not found" });
+            return res.status(404).json({ message: "Application not found" });
         }
-    } else {
-        res.json(applications);
     }
+
+    res.json(applications);
 });
 
+// Create new application
 app.post("/applications", upload.none(), (req, res) => {
     const application = {
         id: applications.length + 1,
@@ -42,24 +50,32 @@ app.post("/applications", upload.none(), (req, res) => {
         reason: req.body.reason,
         status: "Pending",
     };
+
     applications.push(application);
     res.status(201).json(application);
 });
 
+// Update application status
 app.put("/applications/:id", (req, res) => {
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
     const { status } = req.body;
-    const application = applications.find(app => app.id === parseInt(id));
 
-    if (application) {
-        application.status = status;
-        res.json(application);
-    } else {
-        res.status(404).json({ message: "Application not found" });
+    const application = applications.find((app) => app.id === id);
+
+    if (!application) {
+        return res.status(404).json({ message: "Application not found" });
     }
+
+    application.status = status;
+    res.json(application);
+});
+
+// Root route (prevents blank page issue)
+app.get("/", (req, res) => {
+    res.send("Loan API is running successfully 🚀");
 });
 
 // Start server
 app.listen(PORT, () => {
-    console.log(`Server is running on http://0.0.0.0:${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
