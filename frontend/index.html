@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FundedLoan</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to FundedLoan</h1>
+    </header>
+    <main>
+        <section>
+            <p>At FundedLoan, we provide flexible and transparent loan solutions tailored for personal needs, investments, education, travel, and business growth.</p>
+        </section>
+
+        <section>
+            <h2>Track Your Loan Application</h2>
+            <form id="track-form">
+                <label for="track-number">Enter Your Tracking Number</label>
+                <input type="text" id="track-number" name="track-number" required>
+                <button type="submit">Track</button>
+            </form>
+            <div id="application-status" style="margin-top: 1rem; color: #B14EFF;"></div>
+        </section>
+
+        <section>
+            <h2>Our Core Loan Plans</h2>
+            <ul>
+                <li>
+                    <a href="loan_application.html">
+                        <div class="icon">💼</div>
+                        <div class="content">
+                            <h3>Personal Loan</h3>
+                            <p>Interest Rate: 5%<br>Duration: 1 – 5 years</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="loan_application.html">
+                        <div class="icon">🏠</div>
+                        <div class="content">
+                            <h3>Home Loan</h3>
+                            <p>Interest Rate: 3.5%<br>Duration: 10 – 30 years</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="loan_application.html">
+                        <div class="icon">🚗</div>
+                        <div class="content">
+                            <h3>Car Loan</h3>
+                            <p>Interest Rate: 4.5%<br>Duration: 1 – 7 years</p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Investment & Specialized Loan Plans</h2>
+            <ul>
+                <li>
+                    <a href="loan_application.html">
+                        <div class="icon">📈</div>
+                        <div class="content">
+                            <h3>Forex Trading Loan</h3>
+                            <p>Interest Rate: 6%<br>Duration: 6 months – 3 years</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="loan_application.html">
+                        <div class="icon">💻</div>
+                        <div class="content">
+                            <h3>Crypto Trading Loan</h3>
+                            <p>Interest Rate: 6.5%<br>Duration: 6 months – 3 years</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="loan_application.html">
+                        <div class="icon">📊</div>
+                        <div class="content">
+                            <h3>Stock Trading Loan</h3>
+                            <p>Interest Rate: 5.5%<br>Duration: 1 – 5 years</p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Lifestyle, Business & Growth Loans</h2>
+            <ul>
+                <li>
+                    <a href="loan_application.html">
+                        <div class="icon">🎨</div>
+                        <div class="content">
+                            <h3>Creators Loan</h3>
+                            <p>Interest Rate: 5%<br>Duration: 1 – 4 years</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="loan_application.html">
+                        <div class="icon">🌾</div>
+                        <div class="content">
+                            <h3>Farming Loan</h3>
+                            <p>Interest Rate: 4%<br>Duration: 1 – 7 years</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="loan_application.html">
+                        <div class="icon">✈️</div>
+                        <div class="content">
+                            <h3>Visa Loan</h3>
+                            <p>Interest Rate: 5%<br>Duration: 6 months – 2 years</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="loan_application.html">
+                        <div class="icon">🎓</div>
+                        <div class="content">
+                            <h3>School Loan</h3>
+                            <p>Interest Rate: 3%<br>Duration: 1 – 6 years</p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 FundedLoan</p>
+    </footer>
+    <script>
+        document.getElementById("track-form").addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const trackNumber = document.getElementById("track-number").value;
+            const response = await fetch(`http://localhost:8080/applications?trackingNumber=${trackNumber}`);
+            const application = await response.json();
+
+            const statusDiv = document.getElementById("application-status");
+            if (application) {
+                statusDiv.textContent = `Application Status: ${application.status}`;
+            } else {
+                statusDiv.textContent = "Tracking number not found.";
+            }
+        });
+    </script>
+</body>
+</html>
