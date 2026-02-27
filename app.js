@@ -44,4 +44,27 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     fetchApplications();
+
+    // Function to generate a random tracking code
+    function generateTrackingCode() {
+        const prefix = "TRACK";
+        const randomNumber = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit random number
+        return `${prefix}-${randomNumber}`;
+    }
+
+    // Event listener for form submission
+    document.getElementById("loanForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Generate the tracking code
+        const trackingCode = generateTrackingCode();
+
+        // Display the tracking code to the user
+        const trackingCodeDisplay = document.getElementById("trackingCodeDisplay");
+        trackingCodeDisplay.textContent = `Your tracking code is: ${trackingCode}`;
+        trackingCodeDisplay.style.display = "block";
+
+        // Optionally, you can send the tracking code to the server here
+        // Example: fetch('/submit', { method: 'POST', body: JSON.stringify({ trackingCode }) });
+    });
 });

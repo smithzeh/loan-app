@@ -39,9 +39,12 @@ app.get("/applications", (req, res) => {
 
 // Create new application
 app.post("/applications", upload.none(), (req, res) => {
+    // ✅ Generate a random 6-character alphanumeric tracking number
+    const trackingNumber = Math.random().toString(36).substring(2, 8).toUpperCase();
+
     const application = {
         id: applications.length + 1,
-        trackingNumber: req.body.trackingNumber,
+        trackingNumber, // automatically generated
         name: req.body["full-name"],
         email: req.body.email,
         phone: req.body.phone,
